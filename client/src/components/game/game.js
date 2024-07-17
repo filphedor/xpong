@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import Vector from '/vector/vector';
 
 import EventBus from '/event/event-bus';
-import Engine from '/engine/engine';
+import ClientEngine from '/client-engine/client-engine';
 
 import ItemSystem from '/system/item-system';
 import PositionSystem from '/system/position-system';
@@ -40,7 +40,7 @@ function Game() {
 
         Depender.registerDependency('eventBus', eventBus);
 
-        let engine = new Engine(16, 1);
+        let engine = new ClientEngine(16, 1);
 
         let itemSystem = new ItemSystem();
         let positionSystem = new PositionSystem();
@@ -60,6 +60,14 @@ function Game() {
         Depender.registerDependency('forceSystem', forceSystem);
         Depender.registerDependency('collisions', collisions);
 
+        engine.registerSystem(itemSystem);
+        engine.registerSystem(positionSystem);
+        engine.registerSystem(angularPositionSystem);
+        engine.registerSystem(velocitySystem);
+        engine.registerSystem(angularVelocitySystem);
+        engine.registerSystem(forceSystem);
+
+
         let serverListener = new ServerListener(process.env.EVENT_HOST);
         serverListener.connect();
 
@@ -74,20 +82,6 @@ function Game() {
         }
 
         BallDisplay.register();
-
-        let ball = new Item('ball');
-
-        eventBus.trigger(
-            'add',
-            {
-                item: ball,
-                options: {
-                    position: new Vector(10, 10),
-                    velocity: new Vector(.2, .2),
-                    angularPosition: 0
-                }
-            }
-        );
 
         engine.start();
         display.start();

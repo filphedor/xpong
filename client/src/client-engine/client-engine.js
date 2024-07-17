@@ -8,15 +8,20 @@ class ClientEngine {
         this._delta = delta;
         this._speed = speed;
         this._time = 0;
+        this._systems = {};
         this._incorporatedServerTime = 0;
         this._serverTime = 0;
         this._serverData = null;
         this._running = false;
 
-        this._eventBus.listen('serverUpdate', (data) => {
+        this._eventBus.listen('serverUpdate', new EventListener((data) => {
             this._serverTime = data.time;
             this._serverData = data.data;
-        });
+        }));
+    }
+
+    registerSystem(system) {
+        this._systems[system.getKey()] = system;
     }
 
     start() {
@@ -26,11 +31,39 @@ class ClientEngine {
     }
 
     step() {
+        let lead = 2;
         let start = new Date();
 
         if (this._serverTime > this._incorporatedServerTime) {
-            // set data from that time
-            //tick tock from that time til equal to current time
+            console.log('updating from serve')
+            let serverTime = this._serverTime;
+            let data = this._serverData;
+
+            console.log(data)
+
+            let systemKeys = Object.keys(this._systems);
+
+            systemKeys.forEach((key) => {
+                this._systems[key].setData(data[key], serverTime);
+            });
+
+            this._time = serverTime;
+
+            while (this._time < (serverTime + lead)) {
+                this._eventBus.trigger('tick', {
+                    'time': this._time,
+                    'delta': this._delta
+                });
+        
+                this._eventBus.trigger('tock', {
+                    'time': this._time,
+                    'delta': this._delta
+                });
+
+                this._time = this._time + 1;
+            }
+
+            this._incorporatedServerTime = serverTime;
         }
 
         this._eventBus.trigger('tick', {

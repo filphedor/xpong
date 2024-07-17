@@ -25,7 +25,7 @@ AngularPositionSystem.prototype.getAngularPosition = function(item, time) {
     return data[item.getId()];
 }
 
-System.prototype.getKey = function() {
+AngularPositionSystem.prototype.getKey = function() {
     return 'angular-position';
 };
 

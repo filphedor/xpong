@@ -20,8 +20,8 @@ System.prototype.getData = function(time) {
     return this._data[time];
 }
 
-System.prototype.setData = function(time) {
-    return this._data[time];
+System.prototype.setData = function(data, time) {
+    this._data[time] = data;
 }
 
 System.prototype.getKey = function() {

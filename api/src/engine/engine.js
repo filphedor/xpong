@@ -3,17 +3,11 @@ import Depender from "/depender/depender";
 
 class Engine {
     constructor(delta, speed) {
+        this._eventBus = Depender.getDependency('eventBus');
         this._delta = delta;
         this._speed = speed;
-
         this._time = 0;
         this._running = false;
-
-        this._eventBus = Depender.getDependency('eventBus');
-    }
-
-    getTime() {
-        return this._time;
     }
 
     start() {
@@ -35,11 +29,11 @@ class Engine {
             'delta': this._delta
         });
 
-        this._time = this._time + 1;
-
         this._eventBus.trigger('frame', {
             'time': this._time
         });
+
+        this._time = this._time + 1;
 
         let end = new Date();
 

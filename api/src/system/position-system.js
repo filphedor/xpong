@@ -7,18 +7,19 @@ import Vector from '/vector/vector';
 let PositionSystem = function() {
     System.call(this);
 
-    let self = this;
-    this._eventBus.listen('create', new EventListener(function(e) {
-        if (e.position !== undefined) {
-            self.setPosition(e.item, e.position);
+    this._eventBus.listen('create', new EventListener((e) => {
+        if (e.options.position !== undefined) {
+            this.setPosition(e.item, e.options.position, e.time);
         }
     }));
 }
 
 Object.setPrototypeOf(PositionSystem.prototype, System.prototype);
 
-PositionSystem.prototype.setPosition = function(item, position) {
-    this._data[item.getId()] = position;
+PositionSystem.prototype.setPosition = function(item, position, time) {
+    let data = this.getData(time);
+
+    data[item.getId()] = position;
 }
 
 PositionSystem.prototype.getPosition = function(item, time) {

@@ -1,21 +1,22 @@
 import EventListener from '/event/event-listener';
 import System from "./system";
 
-let AngularPositionSystem = function(eventBus) {
-    System.call(this, eventBus);
+let AngularPositionSystem = function() {
+    System.call(this);
 
-    let self = this;
-    this._eventBus.listen('create', new EventListener(function(e) {
-        if (e.angularPosition !== undefined) {
-            self.setAngularPosition(e.item, e.angularPosition);
+    this._eventBus.listen('create', new EventListener((e) => {
+        if (e.options.angularPosition !== undefined) {
+            this.setAngularPosition(e.item, e.options.angularPosition, e.time);
         }
     }));
 }
 
 Object.setPrototypeOf(AngularPositionSystem.prototype, System.prototype);
 
-AngularPositionSystem.prototype.setAngularPosition = function(item, position) {
-    this._data[item.getId()] = position;
+AngularPositionSystem.prototype.setAngularPosition = function(item, position, time) {
+    let data = this.getData(time);
+
+    data[item.getId()] = position;
 }
 
 AngularPositionSystem.prototype.getAngularPosition = function(item, time) {

@@ -6,6 +6,7 @@ import Vector from '/vector/vector';
 import EventBus from '/event/event-bus';
 import Engine from '/engine/engine';
 
+import ItemSystem from '/system/item-system';
 import PositionSystem from '/system/position-system';
 import AngularPositionSystem from '/system/angular-position-system';
 import VelocitySystem from '/system/velocity-system';
@@ -42,6 +43,7 @@ Depender.registerDependency('eventBus', eventBus);
 
 let engine = new Engine(16, 1);
 
+let itemSystem = new ItemSystem();
 let positionSystem = new PositionSystem();
 let angularPositionSystem = new AngularPositionSystem();
 let velocitySystem = new VelocitySystem();
@@ -51,6 +53,7 @@ let forceSystem = new ForceSystem();
 let physics = new Physics();
 let collisions = new Collisions(physics.getEngine());
 
+Depender.registerDependency('itemSystem', itemSystem);
 Depender.registerDependency('positionSystem', positionSystem);
 Depender.registerDependency('angularPositionSystem', angularPositionSystem);
 Depender.registerDependency('velocitySystem', velocitySystem);
@@ -58,7 +61,26 @@ Depender.registerDependency('angularVelocitySystem', angularVelocitySystem);
 Depender.registerDependency('forceSystem', forceSystem);
 Depender.registerDependency('collisions', collisions);
 
+Ball.register();
+
+let ball = new Item('ball');
+
+eventBus.trigger(
+    'add',
+    {
+        item: ball,
+        options: {
+            position: new Vector(10, 10),
+            velocity: new Vector(.2, .2),
+            angularPosition: 0
+        }
+    }
+);
+
+engine.start();
+
 let systemSender = new SystemSender();
+systemSender.registerSystem(itemSystem);
 systemSender.registerSystem(positionSystem);
 systemSender.registerSystem(angularPositionSystem);
 systemSender.registerSystem(velocitySystem);
@@ -66,22 +88,9 @@ systemSender.registerSystem(angularVelocitySystem);
 systemSender.registerSystem(forceSystem);
 
 systemSender.onSend(async (data) => {
+    console.log(data)
     io.emit('serverUpdate', data);
 });
 
-Ball.register();
-
-let ball = new Item('ball');
-
-eventBus.trigger(
-    'create',
-    {
-        item: ball,
-        position: new Vector(10, 10),
-        velocity: new Vector(10, 10),
-        angularPosition: 0
-    }
-);
-
-// engine.start();
+engine.start();
 

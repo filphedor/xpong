@@ -21,6 +21,7 @@ export default {
             let ballIds = Object.keys(balls);
 
             items.forEach((item) => {
+                console.log(item)
                 const id = item.getId();
 
                 if (item.getType() === 'ball' && !ballIds.includes(id)) {
@@ -30,6 +31,6 @@ export default {
                     };
                 }
             });
-        }, 200));
+        }, 300));
     }
 };

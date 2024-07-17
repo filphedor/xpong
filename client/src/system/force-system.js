@@ -29,7 +29,7 @@ ForceSystem.prototype.getForces = function(item, time) {
     return data[item.getId()];
 }
 
-System.prototype.getKey = function() {
+ForceSystem.prototype.getKey = function() {
     return 'force';
 };
 

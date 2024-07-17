@@ -4,21 +4,22 @@ import System from "./system";
 import Vector from '/vector/vector';
 
 
-let VelocitySystem = function(eventBus) {
-    System.call(this, eventBus);
+let VelocitySystem = function() {
+    System.call(this);
 
-    let self = this;
-    this._eventBus.listen('create', new EventListener(function(e) {
-        if (e.velocity !== undefined) {
-            self.setVelocity(e.item, e.velocity);
+    this._eventBus.listen('create', new EventListener((e) => {
+        if (e.options.velocity !== undefined) {
+            this.setVelocity(e.item, e.options.velocity, e.time);
         }
     }));
 }
 
 Object.setPrototypeOf(VelocitySystem.prototype, System.prototype);
 
-VelocitySystem.prototype.setVelocity = function(item, velocity) {
-    this._data[item.getId()] = velocity;
+VelocitySystem.prototype.setVelocity = function(item, velocity, time) {
+    let data = this.getData(time);
+    
+    data[item.getId()] = velocity;
 }
 
 VelocitySystem.prototype.getVelocity = function(item, time) {

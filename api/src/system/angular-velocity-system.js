@@ -1,21 +1,22 @@
 import EventListener from '/event/event-listener';
 import System from "./system";
 
-let AngularVelocitySystem = function(eventBus) {
-    System.call(this, eventBus);
+let AngularVelocitySystem = function() {
+    System.call(this);
 
-    let self = this;
-    this._eventBus.listen('create', new EventListener(function(e) {
-        if (e.angularVelocity !== undefined) {
-            self.setAngularVelocity(e.item, e.angularVelocity);
+    this._eventBus.listen('create', new EventListener((e) => {
+        if (e.options.angularVelocity !== undefined) {
+            this.setAngularVelocity(e.item, e.options.angularVelocity, e.time);
         }
     }));
 }
 
 Object.setPrototypeOf(AngularVelocitySystem.prototype, System.prototype);
 
-AngularVelocitySystem.prototype.setAngularVelocity = function(item, angularVelocity) {
-    this._data[item.getId()] = angularVelocity;
+AngularVelocitySystem.prototype.setAngularVelocity = function(item, angularVelocity, time) {
+    let data = this.getData(time);
+
+    data[item.getId()] = angularVelocity;
 }
 
 AngularVelocitySystem.prototype.getAngularVelocity = function(item, time) {

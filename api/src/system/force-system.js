@@ -4,22 +4,20 @@ import System from "./system";
 import Vector from '/vector/vector';
 
 
-let ForceSystem = function(eventBus) {
-    System.call(this, eventBus);
-
-    this._eventBus.listen('tick', new EventListener(() => {
-        this._data = {};
-    }, 1000));
+let ForceSystem = function() {
+    System.call(this);
 }
 
 Object.setPrototypeOf(ForceSystem.prototype, System.prototype);
 
-ForceSystem.prototype.addForce = function(item, force, applicationPoint) {
-    if (!this._data[item.getId()]) {
-        this._data[item.getId()] = [];
+ForceSystem.prototype.addForce = function(item, force, applicationPoint, time) {
+    let data = this.getData(time);
+
+    if (!data[item.getId()]) {
+        data[item.getId()] = [];
     }
 
-    this._data[item.getId()].push({
+    data[item.getId()].push({
         'force': force,
         'applicationPoint': applicationPoint
     });
@@ -39,7 +37,6 @@ ForceSystem.prototype.cloneData = function(data) {
     let newData = {};
 
     let keys = Object.keys(data);
-
     keys.forEach((key) => {
         let forces = [];
 

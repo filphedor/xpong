@@ -24,6 +24,7 @@ export default {
                 const id = item.getId();
 
                 if (item.getType() === 'ball' && !ballIds.includes(id)) {
+                    console.log('asd')
                     balls[id] = {
                         'exists': true,
                         'renderer': new BallRenderer(item)

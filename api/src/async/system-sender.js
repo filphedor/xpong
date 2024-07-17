@@ -6,24 +6,28 @@ export default class SystemSender {
         this._eventBus = Depender.getDependency('eventBus');
         this._systems = [];
         this._listeners = [];
+        this._lastFrameSentTime = 0;
+        this._frameGap = 500;
 
         this._eventBus.listen('frame', new EventListener(async (e) => {
             let time = e.time;
 
-            let data = {};
+            if (time > this._lastFrameSentTime + this._frameGap) {
+                let data = {};
 
-            this._systems.forEach((system) => {
-                data[system.getKey()] = system.getData(time);
-            });
-
-            this._listeners.forEach((listener) => {
-                listener({
-                    'time': time,
-                    'data': data
+                this._systems.forEach((system) => {
+                    data[system.getKey()] = system.getData(time);
                 });
-            });
+    
+                this._listeners.forEach((listener) => {
+                    listener({
+                        'time': time,
+                        'data': data
+                    });
+                });
 
-
+                this._lastFrameSentTime = time;
+            }
         }), 10000);
     }
 

@@ -14,9 +14,11 @@ let ItemSystem = function(eventBus) {
     this._eventBus.listen('tick', new EventListener((e) => {
         const time = e.time;
 
+        this.setData(this.getData(time), time + 1);
+
         this._cache.forEach((c) => {
             this._eventBus.trigger('create', {
-                'time': time,
+                'time': time + 1,
                 'item': c.item,
                 'options': c.options
             });

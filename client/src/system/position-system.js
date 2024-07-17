@@ -28,7 +28,7 @@ PositionSystem.prototype.getPosition = function(item, time) {
     return data[item.getId()];
 }
 
-System.prototype.getKey = function() {
+PositionSystem.prototype.getKey = function() {
     return 'position';
 };
 

@@ -28,7 +28,7 @@ VelocitySystem.prototype.getVelocity = function(item, time) {
     return data[item.getId()];
 }
 
-System.prototype.getKey = function() {
+VelocitySystem.prototype.getKey = function() {
     return 'velocity';
 };
 

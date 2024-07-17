@@ -25,7 +25,7 @@ AngularVelocitySystem.prototype.getAngularVelocity = function(item, time) {
     return data[item.getId()];
 }
 
-System.prototype.getKey = function() {
+AngularVelocitySystem.prototype.getKey = function() {
     return 'angular-velocity';
 };
 
