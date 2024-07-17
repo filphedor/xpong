@@ -1,5 +1,7 @@
 FROM ubuntu:20.04 as npm
 
+ARG EVENT_HOST
+
 USER root
 
 RUN apt-get update && apt-get -y install \
@@ -15,6 +17,8 @@ RUN groupadd -g 449 dockeruser && \
     useradd -r -m -u 449 -g dockeruser dockeruser
 
 USER dockeruser
+
+ENV EVENT_HOST=${EVENT_HOST}
 
 RUN mkdir /home/dockeruser/project
 

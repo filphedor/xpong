@@ -1,18 +1,22 @@
 import Depender from "/depender/depender";
+import EventListener from '/event/event-listener';
 
 
-class Engine {
+class ClientEngine {
     constructor(delta, speed) {
         this._eventBus = Depender.getDependency('eventBus');
         this._delta = delta;
         this._speed = speed;
         this._time = 0;
+        this._incorporatedServerTime = 0;
+        this._serverTime = 0;
+        this._serverData = null;
         this._running = false;
-        this._steps = [];
-    }
 
-    addStep(step) {
-        this._steps.push(step);
+        this._eventBus.listen('serverUpdate', (data) => {
+            this._serverTime = data.time;
+            this._serverData = data.data;
+        });
     }
 
     start() {
@@ -24,6 +28,11 @@ class Engine {
     step() {
         let start = new Date();
 
+        if (this._serverTime > this._incorporatedServerTime) {
+            // set data from that time
+            //tick tock from that time til equal to current time
+        }
+
         this._eventBus.trigger('tick', {
             'time': this._time,
             'delta': this._delta
@@ -32,6 +41,10 @@ class Engine {
         this._eventBus.trigger('tock', {
             'time': this._time,
             'delta': this._delta
+        });
+
+        this._eventBus.trigger('frame', {
+            'time': this._time
         });
 
         this._time = this._time + 1;
@@ -57,4 +70,4 @@ class Engine {
 }
 
 
-export default Engine;
+export default ClientEngine;

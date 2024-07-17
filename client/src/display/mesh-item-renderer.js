@@ -30,7 +30,6 @@ export default class MeshItemRenderer {
         } else {
             let pos = this._positionSystem.getPosition(this._item, time);
             let angle = this._angularPositionSystem.getAngularPosition(this._item, time);
-
             let dispX = 0;
             let dispY = 0;
             let dispZ = 0;

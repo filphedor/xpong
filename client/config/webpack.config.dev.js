@@ -28,7 +28,9 @@ module.exports = {
         'roots': [path.resolve('./src')]
     },
     'plugins': [
-        new webpack.EnvironmentPlugin([]),
+        new webpack.EnvironmentPlugin([
+            'EVENT_HOST'
+        ]),
         new MiniCssExtractPlugin({
             'ignoreOrder': true
         }),

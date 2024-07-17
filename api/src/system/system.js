@@ -4,24 +4,25 @@ import Depender from '/depender/depender';
 let System = function() {
     this._eventBus = Depender.getDependency('eventBus');
     this._data = {};
+    this._pastData = {};
 
-    this._eventBus.listen('tock', new EventListener((e) => {
-        if (this._data[e.time - 5]) {
-            delete this._data[e.time - 5];
+    let self = this;
+
+    this._eventBus.listen('tock', new EventListener(function(e) {
+        self._pastData[e.time] = self.cloneData(self._data);
+
+        if (self._pastData[e.time - 5]) {
+            self._pastData[e.time - 5] = null;
         }
     }));
 };
 
 System.prototype.getData = function(time) {
-    if (!this._data[time]) {
-        this._data[time] = {};
+    if (!time) {
+        return this._data;
     }
-    
-    return this._data[time];
-}
 
-System.prototype.setData = function(time) {
-    return this._data[time];
+    return this._pastData[time];
 }
 
 System.prototype.getKey = function() {

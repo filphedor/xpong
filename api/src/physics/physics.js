@@ -12,24 +12,22 @@ let Physics = function() {
     this._engine.gravity.scale = 0.0000;
 
     this._eventBus.listen('tick', new EventListener((e) => {
-        this.step(e.time, e.delta);
-    }, 4000))
+        this.step(e.delta);
+    }), 4000)
 };
 
 Physics.prototype.getEngine = function() {
     return this._engine;
 }
 
-Physics.prototype.step = function(time, delta) {
+Physics.prototype.step = function(delta) {
     this._eventBus.trigger('prePhysicsEngine', {
-        'time': time,
         'engine': this._engine
     });
 
     Engine.update(this._engine, delta);
 
     this._eventBus.trigger('postPhysicsEngine', {
-        'time': time,
         'engine': this._engine
     });
 }

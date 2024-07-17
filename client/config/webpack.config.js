@@ -52,7 +52,7 @@ module.exports = {
     },
     'plugins': [
         new webpack.EnvironmentPlugin([
-
+            'EVENT_HOST'
         ]),
         new MiniCssExtractPlugin({
             'ignoreOrder': true

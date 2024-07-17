@@ -7,6 +7,7 @@ import Vector from '/vector/vector';
 import EventBus from '/event/event-bus';
 import Engine from '/engine/engine';
 
+import ItemSystem from '/system/item-system';
 import PositionSystem from '/system/position-system';
 import AngularPositionSystem from '/system/angular-position-system';
 import VelocitySystem from '/system/velocity-system';
@@ -21,13 +22,12 @@ import Display from '/display/display';
 import DebugDisplay from '/debug-display/debug-display';
 import Depender from '/depender/depender';
 
-import Item from '/item/item';
-import BuildingRendererController from '/city/building/building-renderer-controller';
-import SidewalkRendererController from '/city/sidewalk/sidewalk-renderer-controller';
-import RoadRendererController from '/city/road/road-renderer-controller';
-import ItizenRendererController from '/city/itizen/itizen-renderer-controller';
+import ServerListener from '/async/server-listener';
 
-import ApacheMeshMapLoader from '/display/apache-mesh-map-loader';
+import Item from '/item/item';
+
+import Ball from '/xpong/ball/ball';
+import BallDisplay from '/xpong/ball/ball-display';
 
 
 function Game() {
@@ -42,20 +42,28 @@ function Game() {
 
         let engine = new Engine(16, 1);
 
+        let itemSystem = new ItemSystem();
         let positionSystem = new PositionSystem();
         let angularPositionSystem = new AngularPositionSystem();
         let velocitySystem = new VelocitySystem();
         let angularVelocitySystem = new AngularVelocitySystem();
         let forceSystem = new ForceSystem();
 
+        let physics = new Physics();
+        let collisions = new Collisions(physics.getEngine());
+
+        Depender.registerDependency('itemSystem', itemSystem);
         Depender.registerDependency('positionSystem', positionSystem);
         Depender.registerDependency('angularPositionSystem', angularPositionSystem);
         Depender.registerDependency('velocitySystem', velocitySystem);
         Depender.registerDependency('angularVelocitySystem', angularVelocitySystem);
         Depender.registerDependency('forceSystem', forceSystem);
+        Depender.registerDependency('collisions', collisions);
 
-        let physics = new Physics();
-        let collisions = new Collisions(physics.getEngine());
+        let serverListener = new ServerListener(process.env.EVENT_HOST);
+        serverListener.connect();
+
+        Ball.register();
         
         let display = null;
 
@@ -65,29 +73,19 @@ function Game() {
             display = new Display();
         }
 
-        new BuildingRendererController();
-        new SidewalkRendererController();
-        new RoadRendererController();
-        new ItizenRendererController();
+        BallDisplay.register();
 
-        let meshLoader = new ApacheMeshMapLoader('http://localhost:3001/temp');
-        meshLoader.registerPath('bricks', '/bricks.glb');
-        meshLoader.registerPath('sidewalk', '/sidewalk.glb');
-        meshLoader.registerPath('road', '/road.glb');
-        meshLoader.registerPath('itizen', '/itizen.glb');
-
-        let meshMap = await meshLoader.load();
-
-        Depender.registerDependency('meshMap', meshMap);
-
-        let itizen = new Item('itizen');
+        let ball = new Item('ball');
 
         eventBus.trigger(
-            'create',
+            'add',
             {
-                item: itizen,
-                position: new Vector(10, 10),
-                angularPosition: 0
+                item: ball,
+                options: {
+                    position: new Vector(10, 10),
+                    velocity: new Vector(.2, .2),
+                    angularPosition: 0
+                }
             }
         );
 

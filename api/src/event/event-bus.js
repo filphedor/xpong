@@ -23,7 +23,6 @@ EventBus.prototype.unlisten = function(eType, listener) {
     }
 };
 
-//lower priorities trigger first
 EventBus.prototype.trigger = function(eType, e) {
     if (this._eventListeners[eType]) {
         for (const listener of this._eventListeners[eType]) {

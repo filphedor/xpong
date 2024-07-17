@@ -15,7 +15,7 @@ class Display {
         this._camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
         this._lastTick = null;
 
-        this._eventBus.listen('tock', new EventListener((e) => {
+        this._eventBus.listen('frame', new EventListener((e) => {
             this._lastTick = e.time;
         }));
     }
