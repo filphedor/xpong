@@ -52,7 +52,7 @@ ItemSystem.prototype.getItems = function(time) {
 ItemSystem.prototype.setItem = function(item, time) {
     let data = this.getData(time);
 
-    data[item.getId()] = item;
+    data[item.id] = item;
 };
 
 ItemSystem.prototype.getKey = function() {

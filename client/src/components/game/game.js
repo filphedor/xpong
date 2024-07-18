@@ -2,8 +2,6 @@ import './game.scss';
 
 import React, { useEffect, useRef } from 'react';
 
-import Vector from '/vector/vector';
-
 import EventBus from '/event/event-bus';
 import ClientEngine from '/client-engine/client-engine';
 
@@ -23,8 +21,6 @@ import DebugDisplay from '/debug-display/debug-display';
 import Depender from '/depender/depender';
 
 import ServerListener from '/async/server-listener';
-
-import Item from '/item/item';
 
 import Ball from '/xpong/ball/ball';
 import BallDisplay from '/xpong/ball/ball-display';

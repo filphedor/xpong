@@ -15,7 +15,6 @@ export default class ServerListener {
     }
 
     async connect() {
-        console.log(this._eventHost)
         if (!this._socket) {
             const socket = io("ws://" + this._eventHost, {
                 reconnectionDelayMax: 10000

@@ -16,13 +16,13 @@ Object.setPrototypeOf(AngularVelocitySystem.prototype, System.prototype);
 AngularVelocitySystem.prototype.setAngularVelocity = function(item, angularVelocity, time) {
     let data = this.getData(time);
 
-    data[item.getId()] = angularVelocity;
+    data[item.id] = angularVelocity;
 }
 
 AngularVelocitySystem.prototype.getAngularVelocity = function(item, time) {
     let data = this.getData(time);
 
-    return data[item.getId()];
+    return data[item.id];
 }
 
 AngularVelocitySystem.prototype.getKey = function() {

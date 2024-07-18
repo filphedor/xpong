@@ -1,7 +1,7 @@
 import EventListener from '/event/event-listener';
 import System from "./system";
 
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
 
 
 let PositionSystem = function() {
@@ -19,13 +19,13 @@ Object.setPrototypeOf(PositionSystem.prototype, System.prototype);
 PositionSystem.prototype.setPosition = function(item, position, time) {
     let data = this.getData(time);
 
-    data[item.getId()] = position;
+    data[item.id] = position;
 }
 
 PositionSystem.prototype.getPosition = function(item, time) {
     let data = this.getData(time);
 
-    return data[item.getId()];
+    return data[item.id];
 }
 
 PositionSystem.prototype.getKey = function() {
@@ -38,7 +38,7 @@ PositionSystem.prototype.cloneData = function(data) {
     let keys = Object.keys(data);
 
     keys.forEach((key) => {
-        newData[key] = new Vector(data[key].getX(), data[key].getY())
+        newData[key] = VectorBuilder(data[key].x, data[key].y)
     });
 
     return newData;

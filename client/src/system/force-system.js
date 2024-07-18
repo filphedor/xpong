@@ -1,7 +1,7 @@
 import EventListener from '/event/event-listener';
 import System from "./system";
 
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
 
 
 let ForceSystem = function() {
@@ -13,11 +13,11 @@ Object.setPrototypeOf(ForceSystem.prototype, System.prototype);
 ForceSystem.prototype.addForce = function(item, force, applicationPoint, time) {
     let data = this.getData(time);
 
-    if (!data[item.getId()]) {
-        data[item.getId()] = [];
+    if (!data[item.id]) {
+        data[item.id] = [];
     }
 
-    data[item.getId()].push({
+    data[item.id].push({
         'force': force,
         'applicationPoint': applicationPoint
     });
@@ -26,7 +26,7 @@ ForceSystem.prototype.addForce = function(item, force, applicationPoint, time) {
 ForceSystem.prototype.getForces = function(item, time) {
     let data = this.getData(time);
 
-    return data[item.getId()];
+    return data[item.id];
 }
 
 ForceSystem.prototype.getKey = function() {
@@ -42,8 +42,8 @@ ForceSystem.prototype.cloneData = function(data) {
 
         data[key].forEach((force) => {
             forces.push({
-                'force': new Vector(force.force.getX(), force.force.getY()),
-                'applicationPoint': new Vector(force.applicationPoint.getX(), force.applicationPoint.getY())
+                'force': VectorBuilder(force.force.x, force.force.y),
+                'applicationPoint': VectorBuilder(force.applicationPoint.x, force.applicationPoint.y)
             });
         })
         

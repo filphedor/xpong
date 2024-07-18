@@ -16,13 +16,13 @@ Object.setPrototypeOf(AngularPositionSystem.prototype, System.prototype);
 AngularPositionSystem.prototype.setAngularPosition = function(item, position, time) {
     let data = this.getData(time);
 
-    data[item.getId()] = position;
+    data[item.id] = position;
 }
 
 AngularPositionSystem.prototype.getAngularPosition = function(item, time) {
     let data = this.getData(time);
 
-    return data[item.getId()];
+    return data[item.id];
 }
 
 AngularPositionSystem.prototype.getKey = function() {

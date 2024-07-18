@@ -1,7 +1,7 @@
 import EventListener from '/event/event-listener';
 import System from "./system";
 
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
 
 
 let VelocitySystem = function() {
@@ -19,13 +19,13 @@ Object.setPrototypeOf(VelocitySystem.prototype, System.prototype);
 VelocitySystem.prototype.setVelocity = function(item, velocity, time) {
     let data = this.getData(time);
     
-    data[item.getId()] = velocity;
+    data[item.id] = velocity;
 }
 
 VelocitySystem.prototype.getVelocity = function(item, time) {
     let data = this.getData(time);
 
-    return data[item.getId()];
+    return data[item.id];
 }
 
 VelocitySystem.prototype.getKey = function() {
@@ -38,7 +38,7 @@ VelocitySystem.prototype.cloneData = function(data) {
     let keys = Object.keys(data);
 
     keys.forEach((key) => {
-        newData[key] = new Vector(data[key].getX(), data[key].getY())
+        newData[key] = VectorBuilder(data[key].x, data[key].y)
     });
 
     return newData;

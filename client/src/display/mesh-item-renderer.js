@@ -2,7 +2,8 @@ import * as THREE from 'three';
 
 import Depender from '/depender/depender';
 import EventListener from '/event/event-listener';
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
+import VectorUtil from '/vector/vector-util';
 
 
 export default class MeshItemRenderer {
@@ -40,10 +41,10 @@ export default class MeshItemRenderer {
                 dispZ = this._positionTransform.z;
             }
 
-            let rotatedPosition = Vector.rotate(new Vector(dispX, dispY), new Vector(0, 0), angle);
-            let dispPos = Vector.add(pos, rotatedPosition);
+            let rotatedPosition = VectorUtil.rotate(VectorBuilder(dispX, dispY), VectorBuilder(0, 0), angle);
+            let dispPos = VectorUtil.add(pos, rotatedPosition);
 
-            this._mesh.position.set(dispPos.getX(), dispPos.getY(), dispZ);
+            this._mesh.position.set(dispPos.x, dispPos.y, dispZ);
 
             let q = new THREE.Quaternion();
             q.setFromAxisAngle(new THREE.Vector3(0, 0, 1), angle);

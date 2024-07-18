@@ -1,5 +1,5 @@
 import EventListener from "../event/event-listener";
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
 
 import Depender from "/depender/depender";
 
@@ -19,7 +19,7 @@ let Collisions = function(engine) {
                     this._eventBus.trigger('collision', {
                         'itemA': itemA,
                         'itemB': itemB,
-                        'point': new Vector(pair.activeContacts[0].vertex.x,pair.activeContacts[0].vertex.y)
+                        'point': VectorBuilder(pair.activeContacts[0].vertex.x,pair.activeContacts[0].vertex.y)
                     });
                 }
             });

@@ -21,10 +21,9 @@ export default {
             let ballIds = Object.keys(balls);
 
             items.forEach((item) => {
-                const id = item.getId();
+                const id = item.id;
 
-                if (item.getType() === 'ball' && !ballIds.includes(id)) {
-                    console.log('asd')
+                if (item.type === 'ball' && !ballIds.includes(id)) {
                     balls[id] = {
                         'exists': true,
                         'renderer': new BallRenderer(item)

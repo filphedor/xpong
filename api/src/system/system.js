@@ -1,6 +1,7 @@
 import EventListener from '/event/event-listener';
 import Depender from '/depender/depender';
 
+
 let System = function() {
     this._eventBus = Depender.getDependency('eventBus');
     this._data = {};

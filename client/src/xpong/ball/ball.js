@@ -21,10 +21,10 @@ export default {
             let ballIds = Object.keys(balls);
 
             items.forEach((item) => {
-                console.log(item)
-                const id = item.getId();
+                const id = item.id;
 
-                if (item.getType() === 'ball' && !ballIds.includes(id)) {
+                if (item.type === 'ball' && !ballIds.includes(id)) {
+                    console.log('sfd')
                     balls[id] = {
                         'exists': true,
                         'physics': new BallPhysics(item)

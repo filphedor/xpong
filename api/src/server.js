@@ -1,7 +1,7 @@
 import http from "http";
 import { Server } from "socket.io";
 
-import Vector from '/vector/vector';
+import VectorBuilder from '/vector/vector-builder';
 
 import EventBus from '/event/event-bus';
 import Engine from '/engine/engine';
@@ -21,7 +21,7 @@ import Input from '/input/input';
 
 import Depender from '/depender/depender';
 
-import Item from '/item/item';
+import ItemBuilder from '/item/item-builder';
 
 import Ball from '/xpong/ball/ball';
 
@@ -63,15 +63,15 @@ Depender.registerDependency('collisions', collisions);
 
 Ball.register();
 
-let ball = new Item('ball');
+let ball = new ItemBuilder('ball');
 
 eventBus.trigger(
     'add',
     {
         item: ball,
         options: {
-            position: new Vector(10, 10),
-            velocity: new Vector(.2, .2),
+            position: VectorBuilder(10, 10),
+            velocity: VectorBuilder(0, 0),
             angularPosition: 0
         }
     }
@@ -88,7 +88,6 @@ systemSender.registerSystem(angularVelocitySystem);
 systemSender.registerSystem(forceSystem);
 
 systemSender.onSend(async (data) => {
-    console.log(data)
     io.emit('serverUpdate', data);
 });
 

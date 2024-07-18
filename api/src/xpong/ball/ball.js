@@ -21,15 +21,15 @@ export default {
             let ballIds = Object.keys(balls);
 
             items.forEach((item) => {
-                const id = item.getId();
+                const id = item.id;
 
-                if (item.getType() === 'ball' && !ballIds.includes(id)) {
+                if (item.type === 'ball' && !ballIds.includes(id)) {
                     balls[id] = {
                         'exists': true,
                         'physics': new BallPhysics(item)
                     };
                 }
             });
-        }, 200));
+        }, 300));
     }
 };
