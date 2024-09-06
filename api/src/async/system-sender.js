@@ -9,7 +9,7 @@ export default class SystemSender {
         this._lastFrameSentTime = 0;
         this._frameGap = 500;
 
-        this._eventBus.listen('frame', new EventListener(async (e) => {
+        this._eventBus.listen('tock', new EventListener(async (e) => {
             let time = e.time;
 
             if (time > this._lastFrameSentTime + this._frameGap) {

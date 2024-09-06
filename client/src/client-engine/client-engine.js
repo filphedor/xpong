@@ -39,48 +39,50 @@ class ClientEngine {
             let serverTime = this._serverTime;
             let data = this._serverData;
 
+            console.log(serverTime)
             console.log(data)
 
             let systemKeys = Object.keys(this._systems);
 
             systemKeys.forEach((key) => {
-                this._systems[key].setData(data[key], serverTime);
+                this._systems[key].setData(serverTime, data[key]);
             });
 
             this._time = serverTime;
 
+            this._eventBus.trigger('tock', {
+                'time': this._time,
+                'delta': this._delta
+            });
+            
             while (this._time < (serverTime + lead)) {
                 this._eventBus.trigger('tick', {
-                    'time': this._time,
+                    'time': this._time + 1,
                     'delta': this._delta
                 });
+
+                this._time = this._time + 1;
         
                 this._eventBus.trigger('tock', {
                     'time': this._time,
                     'delta': this._delta
                 });
-
-                this._time = this._time + 1;
             }
 
             this._incorporatedServerTime = serverTime;
         }
 
         this._eventBus.trigger('tick', {
-            'time': this._time,
+            'time': this._time + 1,
             'delta': this._delta
         });
+
+        this._time = this._time + 1;
 
         this._eventBus.trigger('tock', {
             'time': this._time,
             'delta': this._delta
         });
-
-        this._eventBus.trigger('frame', {
-            'time': this._time
-        });
-
-        this._time = this._time + 1;
 
         let end = new Date();
 

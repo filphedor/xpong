@@ -6,12 +6,7 @@ import VectorBuilder from '/vector/vector-builder';
 import EventBus from '/event/event-bus';
 import Engine from '/engine/engine';
 
-import ItemSystem from '/system/item-system';
-import PositionSystem from '/system/position-system';
-import AngularPositionSystem from '/system/angular-position-system';
-import VelocitySystem from '/system/velocity-system';
-import AngularVelocitySystem from '/system/angular-velocity-system';
-import ForceSystem from '/system/force-system';
+import System from '/system/system';
 
 import SystemSender from "./async/system-sender";
 
@@ -22,6 +17,9 @@ import Input from '/input/input';
 import Depender from '/depender/depender';
 
 import ItemBuilder from '/item/item-builder';
+import ItemEvents from "/item/item-events";
+
+import PositionEvents from "/position/position-events";
 
 import Ball from '/xpong/ball/ball';
 
@@ -43,12 +41,12 @@ Depender.registerDependency('eventBus', eventBus);
 
 let engine = new Engine(16, 1);
 
-let itemSystem = new ItemSystem();
-let positionSystem = new PositionSystem();
-let angularPositionSystem = new AngularPositionSystem();
-let velocitySystem = new VelocitySystem();
-let angularVelocitySystem = new AngularVelocitySystem();
-let forceSystem = new ForceSystem();
+let itemSystem = new System('item');
+let positionSystem = new System('position');
+let angularPositionSystem = new System('angularPosition');
+let velocitySystem = new System('velocity');
+let angularVelocitySystem = new System('angularVelocity');
+let forceSystem = new System('force');
 
 let physics = new Physics();
 let collisions = new Collisions(physics.getEngine());
@@ -62,20 +60,24 @@ Depender.registerDependency('forceSystem', forceSystem);
 Depender.registerDependency('collisions', collisions);
 
 Ball.register();
+new ItemEvents();
+new PositionEvents();
 
-let ball = new ItemBuilder('ball');
+setTimeout(() => {
+    let ball = new ItemBuilder('ball');
 
-eventBus.trigger(
-    'add',
-    {
-        item: ball,
-        options: {
-            position: VectorBuilder(10, 10),
-            velocity: VectorBuilder(0, 0),
-            angularPosition: 0
+    eventBus.trigger(
+        'add',
+        {
+            item: ball,
+            options: {
+                position: VectorBuilder(10, 10),
+                velocity: VectorBuilder(.2, .2),
+                angularPosition: 0
+            }
         }
-    }
-);
+    );
+}, 4000)
 
 engine.start();
 

@@ -5,12 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import EventBus from '/event/event-bus';
 import ClientEngine from '/client-engine/client-engine';
 
-import ItemSystem from '/system/item-system';
-import PositionSystem from '/system/position-system';
-import AngularPositionSystem from '/system/angular-position-system';
-import VelocitySystem from '/system/velocity-system';
-import AngularVelocitySystem from '/system/angular-velocity-system';
-import ForceSystem from '/system/force-system';
+import System from '/system/system';
 
 import Physics from '/physics/physics';
 import Collisions from '/collisions/collisions';
@@ -18,7 +13,12 @@ import Input from '/input/input';
 
 import Display from '/display/display';
 import DebugDisplay from '/debug-display/debug-display';
+
 import Depender from '/depender/depender';
+
+import ItemEvents from "/item/item-events";
+
+import PositionEvents from "/position/position-events";
 
 import ServerListener from '/async/server-listener';
 
@@ -38,12 +38,12 @@ function Game() {
 
         let engine = new ClientEngine(16, 1);
 
-        let itemSystem = new ItemSystem();
-        let positionSystem = new PositionSystem();
-        let angularPositionSystem = new AngularPositionSystem();
-        let velocitySystem = new VelocitySystem();
-        let angularVelocitySystem = new AngularVelocitySystem();
-        let forceSystem = new ForceSystem();
+        let itemSystem = new System('item');
+        let positionSystem = new System('position');
+        let angularPositionSystem = new System('angularPosition');
+        let velocitySystem = new System('velocity');
+        let angularVelocitySystem = new System('angularVelocity');
+        let forceSystem = new System('force');
 
         let physics = new Physics();
         let collisions = new Collisions(physics.getEngine());

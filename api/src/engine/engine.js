@@ -20,20 +20,16 @@ class Engine {
         let start = new Date();
 
         this._eventBus.trigger('tick', {
-            'time': this._time,
+            'time': this._time + 1,
             'delta': this._delta
         });
+
+        this._time = this._time + 1;
 
         this._eventBus.trigger('tock', {
             'time': this._time,
             'delta': this._delta
         });
-
-        this._eventBus.trigger('frame', {
-            'time': this._time
-        });
-
-        this._time = this._time + 1;
 
         let end = new Date();
 

@@ -15,7 +15,7 @@ class Display {
         this._camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
         this._lastTick = null;
 
-        this._eventBus.listen('frame', new EventListener((e) => {
+        this._eventBus.listen('tock', new EventListener((e) => {
             this._lastTick = e.time;
         }));
     }
@@ -29,8 +29,8 @@ class Display {
 
         this._camera.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 3);
 
-        this._camera.position.x = 15;
-        this._camera.position.y = -10;
+        this._camera.position.x = 0;
+        this._camera.position.y = -20;
         this._camera.position.z = 10;
 
         //ground

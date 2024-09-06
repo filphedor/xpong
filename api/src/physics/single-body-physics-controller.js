@@ -37,12 +37,12 @@ SingleBodyPhysicsController.prototype.pre = function(engine, time) {
 
     this._engine = engine;
 
-    let pos = this._positionSystem.getPosition(this._item, time);
-    let angPos = this._angularPositionSystem.getAngularPosition(this._item, time);
-    let vel = this._velocitySystem.getVelocity(this._item, time);
-    let angVel = this._angularVelocitySystem.getAngularVelocity(this._item, time);
-    let forces = this._forceSystem.getForces(this._item, time);
-    
+    let pos = this._positionSystem.get(this._item, time - 1);
+    let angPos = this._angularPositionSystem.get(this._item, time - 1);
+    let vel = this._velocitySystem.get(this._item, time - 1);
+    let angVel = this._angularVelocitySystem.get(this._item, time - 1);
+    let forces = this._forceSystem.get(this._item, time - 1);
+
     if (pos) {
         Body.setPosition(this._body, {
             'x': pos.x,
@@ -88,10 +88,10 @@ SingleBodyPhysicsController.prototype.post = function(engine, time) {
     let vel = this._body.velocity;
     let angVel = this._body.angularVelocity;
 
-    this._positionSystem.setPosition(this._item, VectorBuilder(pos.x, pos.y), time + 1);
-    this._angularPositionSystem.setAngularPosition(this._item, angPos, time + 1);
-    this._velocitySystem.setVelocity(this._item, VectorBuilder(vel.x, vel.y), time + 1);
-    this._angularVelocitySystem.setAngularVelocity(this._item, angVel, time + 1);
+    this._positionSystem.set(this._item, time, VectorBuilder(pos.x, pos.y));
+    this._angularPositionSystem.set(this._item, time, angPos);
+    this._velocitySystem.set(this._item, time, VectorBuilder(vel.x, vel.y));
+    this._angularVelocitySystem.set(this._item, time, angVel);
 }
 
 export default SingleBodyPhysicsController;

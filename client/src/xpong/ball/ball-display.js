@@ -2,6 +2,7 @@ import Depender from '/depender/depender';
 import EventListener from '/event/event-listener';
 
 import BallRenderer from './ball-renderer';
+import ItemSystemUtil from '/item/item-system-util';
 
 
 export default {
@@ -11,8 +12,8 @@ export default {
 
         const balls = {};
 
-        eventBus.listen('frame', new EventListener((e) => {
-            let items = itemSystem.getItems(e.time);
+        eventBus.listen('tock', new EventListener((e) => {
+            let items = new ItemSystemUtil(itemSystem).getItems(e.time);
 
             Object.keys(balls).forEach((key) => {
                 balls[key].exists = false;
