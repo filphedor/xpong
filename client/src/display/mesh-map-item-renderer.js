@@ -1,4 +1,4 @@
-import Depender from '/depender/depender';
+import Depender from '/shared/depender/depender';
 
 import MeshMapMeshResolver from './mesh-map-mesh-resolver';
 import MeshItemRenderer from './mesh-item-renderer';

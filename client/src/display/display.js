@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 
-import EventListener from '/event/event-listener';
+import EventListener from '/shared/event/event-listener';
 
-import Depender from '/depender/depender';
+import Depender from '/shared/depender/depender';
 
 
 class Display {

@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
-import Depender from '/depender/depender';
-import EventListener from '/event/event-listener';
-import VectorBuilder from '/vector/vector-builder';
-import VectorUtil from '/vector/vector-util';
+import Depender from '/shared/depender/depender';
+import EventListener from '/shared/event/event-listener';
+import VectorBuilder from '/shared/vector/vector-builder';
+import VectorUtil from '/shared/vector/vector-util';
 
 
 export default class MeshItemRenderer {

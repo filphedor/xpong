@@ -1,8 +1,8 @@
-import Depender from '/depender/depender';
-import EventListener from '/event/event-listener';
+import Depender from '/shared/depender/depender';
+import EventListener from '/shared/event/event-listener';
 
 import BallRenderer from './ball-renderer';
-import ItemSystemUtil from '/item/item-system-util';
+import ItemSystemUtil from '/shared/item/item-system-util';
 
 
 export default {
@@ -14,6 +14,7 @@ export default {
 
         eventBus.listen('tock', new EventListener((e) => {
             let items = new ItemSystemUtil(itemSystem).getItems(e.time);
+
 
             Object.keys(balls).forEach((key) => {
                 balls[key].exists = false;

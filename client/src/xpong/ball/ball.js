@@ -1,7 +1,7 @@
-import Depender from '/depender/depender';
-import EventListener from '/event/event-listener';
+import Depender from '/shared/depender/depender';
+import EventListener from '/shared/event/event-listener';
 
-import ItemSystemUtil from '/item/item-system-util';
+import ItemSystemUtil from '/shared/item/item-system-util';
 
 import BallPhysics from './ball-physics';
 
@@ -23,7 +23,6 @@ export default {
             let ballIds = Object.keys(balls);
 
             items.forEach((item) => {
-                console.log(item)
                 const id = item.id;
 
                 if (item.type === 'ball' && !ballIds.includes(id)) {

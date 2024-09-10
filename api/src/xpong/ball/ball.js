@@ -1,7 +1,7 @@
-import Depender from '/depender/depender';
-import EventListener from '/event/event-listener';
+import Depender from '/shared/depender/depender';
+import EventListener from '/shared/event/event-listener';
 
-import ItemSystemUtil from '/item/item-system-util';
+import ItemSystemUtil from '/shared/item/item-system-util';
 
 import BallPhysics from './ball-physics';
 

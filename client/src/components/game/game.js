@@ -2,25 +2,24 @@ import './game.scss';
 
 import React, { useEffect, useRef } from 'react';
 
-import EventBus from '/event/event-bus';
-import ClientEngine from '/client-engine/client-engine';
+import EventBus from '/shared/event/event-bus';
+import ClientEngine from '/shared/engine/client-engine';
+import ServerListener from '/shared/async/server-listener';
 
-import System from '/system/system';
+import Depender from '/shared/depender/depender';
 
-import Physics from '/physics/physics';
-import Collisions from '/collisions/collisions';
-import Input from '/input/input';
+import Async from "/shared/async/async";
+import Item from '/shared/item/item';
+import Position from '/shared/position/position';
+import AngularPosition from '/shared/angular-position/angular-position';
+import Velocity from '/shared/velocity/velocity';
+import AngularVelocity from '/shared/angular-velocity/angular-velocity';
+import Force from '/shared/force/force';
+import Physics from '/shared/physics/physics';
+import Collisions from '/shared/collisions/collisions';
 
 import Display from '/display/display';
 import DebugDisplay from '/debug-display/debug-display';
-
-import Depender from '/depender/depender';
-
-import ItemEvents from "/item/item-events";
-
-import PositionEvents from "/position/position-events";
-
-import ServerListener from '/async/server-listener';
 
 import Ball from '/xpong/ball/ball';
 import BallDisplay from '/xpong/ball/ball-display';
@@ -36,32 +35,24 @@ function Game() {
 
         Depender.registerDependency('eventBus', eventBus);
 
+        Async();
+        Item();
+        Position();
+        AngularPosition();
+        Velocity();
+        AngularVelocity();
+        Force();
+        Physics();
+        Collisions();
+
         let engine = new ClientEngine(16, 1);
 
-        let itemSystem = new System('item');
-        let positionSystem = new System('position');
-        let angularPositionSystem = new System('angularPosition');
-        let velocitySystem = new System('velocity');
-        let angularVelocitySystem = new System('angularVelocity');
-        let forceSystem = new System('force');
-
-        let physics = new Physics();
-        let collisions = new Collisions(physics.getEngine());
-
-        Depender.registerDependency('itemSystem', itemSystem);
-        Depender.registerDependency('positionSystem', positionSystem);
-        Depender.registerDependency('angularPositionSystem', angularPositionSystem);
-        Depender.registerDependency('velocitySystem', velocitySystem);
-        Depender.registerDependency('angularVelocitySystem', angularVelocitySystem);
-        Depender.registerDependency('forceSystem', forceSystem);
-        Depender.registerDependency('collisions', collisions);
-
-        engine.registerSystem(itemSystem);
-        engine.registerSystem(positionSystem);
-        engine.registerSystem(angularPositionSystem);
-        engine.registerSystem(velocitySystem);
-        engine.registerSystem(angularVelocitySystem);
-        engine.registerSystem(forceSystem);
+        engine.registerSystem(Depender.getDependency('itemSystem'));
+        engine.registerSystem(Depender.getDependency('positionSystem'));
+        engine.registerSystem(Depender.getDependency('angularPositionSystem'));
+        engine.registerSystem(Depender.getDependency('velocitySystem'));
+        engine.registerSystem(Depender.getDependency('angularVelocitySystem'));
+        engine.registerSystem(Depender.getDependency('forceSystem'));
 
 
         let serverListener = new ServerListener(process.env.EVENT_HOST);
@@ -72,7 +63,8 @@ function Game() {
         let display = null;
 
         if (debug) {
-            display = new DebugDisplay(canvas.current, physics.getEngine(), 1000, 1000);   
+            let physicsEngine = Depender.getDependency('physicsEngine')
+            display = new DebugDisplay(canvas.current, physicsEngine, 1000, 1000);   
         } else {
             display = new Display();
         }
